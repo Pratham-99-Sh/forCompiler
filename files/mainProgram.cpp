@@ -120,6 +120,18 @@ HDpair fastDiameter(node* root){
     return p;
 }
 
+bool isMirror(node*a, node*b){
+    if(a == NULL && b == NULL) return true;
+    if(a == NULL || b == NULL) return false;
+    if(a->data != b->data) return false;
+    return isMirror(a->left, b->right) && isMirror(a->right, b->left);
+}
+
+bool isSymmetric(node* root) {
+    if(root == NULL) return true;
+    return isMirror(root->left, root->right);
+}
+
 int main(){
     node* root = buildLevel();
     printLevelOrder(root);
