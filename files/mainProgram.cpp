@@ -132,6 +132,45 @@ bool isSymmetric(node* root) {
     return isMirror(root->left, root->right);
 }
 
+int evalTree(node* root){
+    if(root == NULL) return 0;
+    if(root->left == NULL && root->right == NULL) return root->data;
+    int left = evalTree(root->left);
+    int right = evalTree(root->right);
+    if(root->data == '+') return left+right;
+    if(root->data == '-') return left-right;
+    if(root->data == '*') return left*right;
+    if(root->data == '/') return left/right;
+}
+
+node* remove(node* root){
+    if(root == NULL) return NULL;
+    if(root->left) root->left = remove(root->left);
+    if(root->right) root->right = remove(root->right);
+    if((root->left!=NULL and root->right==NULL) or (root->left==NULL and root->right!=NULL)){
+        if(root->left) root = root->left;
+        else root = root->right;
+        root = remove(root);
+    }
+    return root;
+}
+
+void inLine(node* root, vector<int>&v){
+    if(root == NULL) return;
+    inLine(root->left, v);
+    v.push_back(root->data);
+    inLine(root->right, v);
+}
+
+vector<int> removeHalfNodes(node *root)
+{
+    vector<int> v;
+    if(root == NULL) return v;
+    root = remove(root);
+    inLine(root, v);
+    return v;
+}
+
 int main(){
     node* root = buildLevel();
     printLevelOrder(root);
