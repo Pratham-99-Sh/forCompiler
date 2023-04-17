@@ -73,6 +73,17 @@ node* remove(node* root, int key){
     return root;
 }
 
+void printRange(node* root, int k1, int k2){
+    if(root==NULL) return;
+    if(k1<=root->data and k2>=root->data) {
+        printRange(root->left, k1, k2);
+        cout<<root->data<<" ";
+        printRange(root->right, k1, k2);
+    }
+    else if(k2>root->data) printRange(root->right, k1, k2);
+    else printRange(root->left, k1, k2);
+}
+
 int main()
 {
     int arr[] = {5, 3, 7, 1, 4, 6, 8};
@@ -84,7 +95,7 @@ int main()
 
     printInLine(root);
     cout<<endl;
-    root = remove(root, 1);
-    printInLine(root);
+    //root = remove(root, 1);
+    printRange(root,2,6);
     return 0;
 }
