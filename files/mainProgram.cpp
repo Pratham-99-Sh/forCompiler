@@ -1,101 +1,83 @@
 #include<iostream>
+#include<vector>
 using namespace std;
 
-class node{
+class Heap{
+    vector<int> arr;
+    bool mode;  // 1 for min heap and 0 for max heap
+
+    bool compare(int a, int b, bool type){
+        if(type)
+        return a<b;
+        else
+        return a>b;
+    }
+
+    void heapify(int i){
+        int left = 2*i;
+        int right = 2*i+1;
+        int minIdx = i;
+        if(left<arr.size() && compare(arr[left], arr[minIdx], mode)){
+            minIdx = left;
+        }
+        if(right<arr.size() && compare(arr[right], arr[minIdx], mode)){
+            minIdx = right;
+        }
+        if(minIdx!=i){
+            swap(arr[i], arr[minIdx]);
+            heapify(minIdx);
+        }
+    }
+
     public:
-        int data;
-        node* left;
-        node* right;
-        node(int d){
-            data = d;
-            left = NULL;
-            right = NULL;
+    Heap(int defSize = 10, bool type = true){   //type ==1 for min heap and 0 for max heap
+        arr.reserve(defSize+1);
+        arr.push_back(-1);
+        mode = type;
+    }
+
+    void push(int data){
+        arr.push_back(data);
+        int idx = arr.size()-1;
+        int parent = idx/2;
+        while(idx>1 && compare(arr[idx], arr[parent], mode)){
+            swap(arr[idx], arr[parent]);
+            idx = parent;
+            parent = parent/2;
         }
+    }
+
+    int top(){
+        return arr[1];
+    }
+
+    void pop(){
+        if(this->empty()) return;
+        int lastIdx = arr.size()-1;    
+        swap(arr[1], arr[lastIdx]);
+        arr.pop_back();
+        heapify(1);
+    }
+
+    bool empty(){
+        return arr.size()==1;
+    }
 };
-
-node* insert(node* root, int key){
-    if(root==NULL) return new node(key);
-    if(key<root->data) root->left = insert(root->left, key);
-    else root->right = insert(root->right, key);
-    return root;
-}
-
-void printInLine(node* root)
-{
-    if(root==NULL) return;
-    printInLine(root->left);
-    cout<<root->data<<" ";
-    printInLine(root->right);
-}
-
-bool search(node* root, int key){
-    if(root==NULL) return false;
-    if(root->data==key) return true;
-    if(key<root->data) return search(root->left, key);
-    else return search(root->right, key);
-}
-
-node* findMin(node* root){
-    if(root==NULL) return NULL;
-    if(root->left==NULL) return root;
-    return findMin(root->left);
-}
-
-node* remove(node* root, int key){
-    if(root==NULL) return NULL;
-    if(key<root->data) root->left = remove(root->left, key);
-    else if(key>root->data) root->right = remove(root->right, key);
-    else{
-        if(root->left==NULL and root->right==NULL){
-            delete root;
-            root = NULL;
-            return root;
-        }
-
-       else if(root->left==NULL){
-            node* temp = root->right;
-            delete root;
-            return temp;
-        }
-
-        else if(root->right==NULL){
-            node*temp = root->left;
-            delete root;
-            return temp;
-        }
-        else{
-            node* temp = findMin(root->right);
-            root->data = temp->data;
-            root->right = remove(root->right, temp->data);
-            return root;
-        }
-    }
-    return root;
-}
-
-void printRange(node* root, int k1, int k2){
-    if(root==NULL) return;
-    if(k1<=root->data and k2>=root->data) {
-        printRange(root->left, k1, k2);
-        cout<<root->data<<" ";
-        printRange(root->right, k1, k2);
-    }
-    else if(k2>root->data) printRange(root->right, k1, k2);
-    else printRange(root->left, k1, k2);
-}
 
 int main()
 {
-    int arr[] = {5, 3, 7, 1, 4, 6, 8};
-    node* root = NULL;
-    for(auto x:arr)
-    {
-        root = insert(root, x);
+    Heap h;
+    int n;
+    cin>>n;
+    for(int i=0; i<n; i++){
+        int no;
+        cin>>no;
+        h.push(no);
     }
-
-    printInLine(root);
     cout<<endl;
-    //root = remove(root, 1);
-    printRange(root,2,6);
+    while(!h.empty()){
+        cout<<h.top()<<" ";
+        h.pop();
+    }
     return 0;
 }
