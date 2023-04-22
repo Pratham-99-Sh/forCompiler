@@ -1,70 +1,119 @@
-#include <iostream>
-#include <queue>
-#include <vector>
-#include <algorithm>
+#include<iostream>
+#include<string>
 using namespace std;
 
-class car{
-    public :
-    string id;
-    int x;
-    int y;
-    
-    car(string i, int x, int y){
-        this->id = i;
-        this->x = x;
-        this->y = y;
-    }
-
-    int dist() const{
-        return x*x + y*y;
-    }
-};
-
-class carCompare{
+template<class T>
+class node{
     public:
-    bool operator()(const car A, const car B){
-        return A.dist() < B.dist();
+    string key;
+    T value;
+    node<T>* next;
+    node(string k, T val){
+        this->key = k;
+        this->value = val;
+        next = NULL;
     }
+
+    ~node(){
+        if(next!=NULL)
+        delete next;
+    }
+    
 };
 
-bool distCompare(car A, car B){
-        return A.dist() < B.dist();
+template<class T>
+class HashTable{
+    node<T>** table;
+    int current_size;
+    int table_size;
+
+    int hashFn(string key){
+        int idx = 0;
+        int p = 1;
+        for(int j=0; j<key.length(); j++){
+            idx = (idx + (key[j]*p))%table_size;
+            p = (p*27)%table_size;
+        }
+        return idx;
     }
 
-void printKNearestCars(vector<car> &cars, int k){
-    priority_queue<car, vector<car>, carCompare> q(cars.begin(), cars.begin()+k);
-    for(int i=k; i<cars.size(); i++){
-        if(cars[i].dist() < q.top().dist()){
-            q.pop();
-            q.push(cars[i]);
+    void rehash(){
+        node<T>** oldTable = table;
+        int oldTable_size = table_size;
+        table_size = 2*table_size+1;
+        current_size = 0;
+        table = new node<T>*[table_size];
+        for(int i=0; i<table_size; i++){
+            table[i] = NULL;
+        }
+
+        for(int i=0; i<oldTable_size; i++){
+            node<T>* temp = oldTable[i];
+            while(temp!=NULL){
+                insert(temp->key, temp->value);
+                temp = temp->next;
+            }
+
+            if(oldTable[i]!=NULL)
+            delete oldTable[i];
+        }
+        delete [] oldTable;
+    }
+
+    public:
+    HashTable(int ts = 7){
+        table_size = ts;
+        table = new node<T>*[table_size];
+        current_size = 0;
+        for(int i=0; i<table_size; i++){
+            table[i] = NULL;
         }
     }
+    
+    void insert(string key, T value){
+        int index = hashFn(key);
+        node<T>* n = new node<T>(key, value);
 
-    vector<car> output;
-    while(!q.empty()){
-        output.push_back(q.top());
-        q.pop();
+        // Insert at head of the linked list with id = index
+        n->next = table[index];
+        table[index] = n;
+
+        current_size++;
+
+        float loadFactor = current_size/(1.0*table_size);
+        if(loadFactor>0.7){
+            rehash();
+        }
+
     }
 
-    sort(output.begin(), output.end(), distCompare);
-
-    for(auto c: output){
-        cout << c.id << " " << c.dist() << endl;
+    void print(){
+        for(int i=0; i<table_size; i++){
+            cout<<"Bucket "<<i<<" : ";
+            node<T>* temp = table[i];
+            while(temp!=NULL){
+                cout<<"-> "<<temp->key;
+                temp = temp->next;
+            }
+            cout<<endl;
+        }
     }
-}
+};
 
 int main(){
-    int n, k;
-    cin >> n >> k;
-    vector<car> cars;
-    for(int i=0; i<n; i++){
-        string id;
-        int x, y;
-        cin >> id >> x >> y;
-        car c(id, x, y);
-        cars.push_back(c);
-    }
-    printKNearestCars(cars, k);
+    HashTable<int> price_menu;
+    price_menu.insert("Burger", 120);
+    price_menu.insert("Pepsi", 20);
+    price_menu.insert("Noodles", 25);
+    price_menu.insert("Pizza", 150);
+    price_menu.insert("Coke", 40);
+    price_menu.insert("BurgerPizza", 25);
+    price_menu.insert("Noodles", 50);
+    price_menu.insert("BurgerPizza", 100);
+    price_menu.insert("Dosa", 60);
+    price_menu.insert("Idli", 50);
+    price_menu.insert("VadaPav", 20);
+    price_menu.insert("Samosa", 10);
+    price_menu.print();
     return 0;
 }
