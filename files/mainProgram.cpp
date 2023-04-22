@@ -1,83 +1,70 @@
-#include<iostream>
-#include<vector>
+#include <iostream>
+#include <queue>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-class Heap{
-    vector<int> arr;
-    bool mode;  // 1 for min heap and 0 for max heap
-
-    bool compare(int a, int b, bool type){
-        if(type)
-        return a<b;
-        else
-        return a>b;
+class car{
+    public :
+    string id;
+    int x;
+    int y;
+    
+    car(string i, int x, int y){
+        this->id = i;
+        this->x = x;
+        this->y = y;
     }
 
-    void heapify(int i){
-        int left = 2*i;
-        int right = 2*i+1;
-        int minIdx = i;
-        if(left<arr.size() && compare(arr[left], arr[minIdx], mode)){
-            minIdx = left;
-        }
-        if(right<arr.size() && compare(arr[right], arr[minIdx], mode)){
-            minIdx = right;
-        }
-        if(minIdx!=i){
-            swap(arr[i], arr[minIdx]);
-            heapify(minIdx);
-        }
-    }
-
-    public:
-    Heap(int defSize = 10, bool type = true){   //type ==1 for min heap and 0 for max heap
-        arr.reserve(defSize+1);
-        arr.push_back(-1);
-        mode = type;
-    }
-
-    void push(int data){
-        arr.push_back(data);
-        int idx = arr.size()-1;
-        int parent = idx/2;
-        while(idx>1 && compare(arr[idx], arr[parent], mode)){
-            swap(arr[idx], arr[parent]);
-            idx = parent;
-            parent = parent/2;
-        }
-    }
-
-    int top(){
-        return arr[1];
-    }
-
-    void pop(){
-        if(this->empty()) return;
-        int lastIdx = arr.size()-1;    
-        swap(arr[1], arr[lastIdx]);
-        arr.pop_back();
-        heapify(1);
-    }
-
-    bool empty(){
-        return arr.size()==1;
+    int dist() const{
+        return x*x + y*y;
     }
 };
 
-int main()
-{
-    Heap h;
-    int n;
-    cin>>n;
+class carCompare{
+    public:
+    bool operator()(const car A, const car B){
+        return A.dist() < B.dist();
+    }
+};
+
+bool distCompare(car A, car B){
+        return A.dist() < B.dist();
+    }
+
+void printKNearestCars(vector<car> &cars, int k){
+    priority_queue<car, vector<car>, carCompare> q(cars.begin(), cars.begin()+k);
+    for(int i=k; i<cars.size(); i++){
+        if(cars[i].dist() < q.top().dist()){
+            q.pop();
+            q.push(cars[i]);
+        }
+    }
+
+    vector<car> output;
+    while(!q.empty()){
+        output.push_back(q.top());
+        q.pop();
+    }
+
+    sort(output.begin(), output.end(), distCompare);
+
+    for(auto c: output){
+        cout << c.id << " " << c.dist() << endl;
+    }
+}
+
+int main(){
+    int n, k;
+    cin >> n >> k;
+    vector<car> cars;
     for(int i=0; i<n; i++){
-        int no;
-        cin>>no;
-        h.push(no);
+        string id;
+        int x, y;
+        cin >> id >> x >> y;
+        car c(id, x, y);
+        cars.push_back(c);
     }
-    cout<<endl;
-    while(!h.empty()){
-        cout<<h.top()<<" ";
-        h.pop();
-    }
+    printKNearestCars(cars, k);
     return 0;
 }
