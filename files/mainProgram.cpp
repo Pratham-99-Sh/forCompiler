@@ -1,5 +1,6 @@
 #include<iostream>
 #include<list>
+#include<queue>
 
 using namespace std;
 
@@ -31,19 +32,43 @@ class Graph{
             cout<<endl;
         }
     }
+
+    void bfs(int source)
+    {
+        queue<int> q;
+        bool *visited = new bool[V]{0};
+
+        q.push(source);
+        visited[source] = true;
+
+        while(!q.empty())
+        {
+            int node = q.front();
+            q.pop();
+            cout<<node<<" ";
+
+            for(int neighbour : adj[node])
+                if(!visited[neighbour])
+                {
+                    q.push(neighbour);
+                    visited[neighbour] = true;
+                }
+        }
+    }
 };
 
 int main()
 {
-    Graph g(6); // means my edges can be pair from 0,1,2,3,4,5 only
+    Graph g(7); // 7 vertices numbered from 0 to 6
     g.addEdge(0,1);
-    g.addEdge(0,4);
-    g.addEdge(2,1);
-    g.addEdge(3,4);
-    g.addEdge(4,5);
+    g.addEdge(1,2);
     g.addEdge(2,3);
     g.addEdge(3,5);
+    g.addEdge(5,6);
+    g.addEdge(4,5);
+    g.addEdge(0,4);
+    g.addEdge(3,4);
 
-    g.printAdj();
+    g.bfs(1);
     return 0;
 }
