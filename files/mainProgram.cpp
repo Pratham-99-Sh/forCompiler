@@ -55,6 +55,22 @@ class Graph{
                 }
         }
     }
+
+    void dfsHelper(int node, bool *visited)
+    {
+        visited[node] = true;
+        cout<<node<<" ";
+
+        for(int neighbour : adj[node])
+            if(!visited[neighbour])
+                dfsHelper(neighbour, visited);
+    }
+
+    void dfs(int source)
+    {
+        bool *visited = new bool[V]{0};
+        dfsHelper(source, visited);
+    }
 };
 
 int main()
@@ -69,6 +85,6 @@ int main()
     g.addEdge(0,4);
     g.addEdge(3,4);
 
-    g.bfs(1);
+    g.dfs(1);
     return 0;
 }
