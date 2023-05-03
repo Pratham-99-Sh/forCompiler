@@ -1,6 +1,7 @@
 #include<iostream>
 #include<list>
 #include<queue>
+#include<vector>
 
 using namespace std;
 
@@ -71,20 +72,46 @@ class Graph{
         bool *visited = new bool[V]{0};
         dfsHelper(source, visited);
     }
+
+    void topological_sort()
+    {
+        vector<int> degreeDependency(V, 0);
+        
+        for(int i=0; i<V; i++)
+            for(int neighbour : adj[i])
+                degreeDependency[neighbour]++;
+
+        queue<int> q;
+        for(int i=0; i<V; i++)
+            if(degreeDependency[i] == 0)
+                q.push(i);
+
+        while(!q.empty())
+        {
+            int node = q.front();
+            q.pop();
+            cout<<node<<" ";
+
+            for(int neighbour : adj[node])
+            {
+                degreeDependency[neighbour]--;
+                if(degreeDependency[neighbour] == 0)
+                    q.push(neighbour);
+            }
+        }
+    }
 };
 
 int main()
 {
-    Graph g(7); // 7 vertices numbered from 0 to 6
-    g.addEdge(0,1);
-    g.addEdge(1,2);
-    g.addEdge(2,3);
-    g.addEdge(3,5);
-    g.addEdge(5,6);
-    g.addEdge(4,5);
-    g.addEdge(0,4);
-    g.addEdge(3,4);
+    Graph g(6); // 7 vertices numbered from 0 to 6
+    g.addEdge(0,2, false);
+    g.addEdge(2,3, false);
+    g.addEdge(3,5, false);
+    g.addEdge(4,5, false);
+    g.addEdge(1,4, false);
+    g.addEdge(1,2, false);
 
-    g.dfs(1);
+    g.topological_sort();
     return 0;
 }
