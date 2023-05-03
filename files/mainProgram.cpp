@@ -2,116 +2,73 @@
 #include<list>
 #include<queue>
 #include<vector>
+#include<climits>
+#include<set>
 
 using namespace std;
 
 class Graph{
     int V;
-    list<int> *adj;
+    list<pair<int, int>> *adj;
 
     public:
     Graph(int size)
     {
         V = size;
-        adj = new list<int>[V];
+        adj = new list<pair<int, int>>[V];
     }
 
-    void addEdge(int a, int b, bool undir=true)
+    void addEdge(int a, int b, int wt, bool undir=true)
     {
-        adj[a].push_back(b);
+        adj[a].push_back({wt, b});
         if(undir)
-            adj[b].push_back(a);
+            adj[b].push_back({wt, a});
     }
 
-    void printAdj()
+    int dijkstra(int src, int dest)
     {
-        for(int i=0; i<V; i++)
+        vector<int> dist(V, INT_MAX);
+        dist[src] = 0;
+        set<pair<int, int>> s;
+        s.insert({0, src});
+
+        while(!s.empty())
         {
-            cout<<i<<" --> ";
-            for(int elem : adj[i])
-                cout<<elem<<", ";
-            cout<<endl;
-        }
-    }
-
-    void bfs(int source)
-    {
-        queue<int> q;
-        bool *visited = new bool[V]{0};
-
-        q.push(source);
-        visited[source] = true;
-
-        while(!q.empty())
-        {
-            int node = q.front();
-            q.pop();
-            cout<<node<<" ";
-
-            for(int neighbour : adj[node])
-                if(!visited[neighbour])
-                {
-                    q.push(neighbour);
-                    visited[neighbour] = true;
-                }
-        }
-    }
-
-    void dfsHelper(int node, bool *visited)
-    {
-        visited[node] = true;
-        cout<<node<<" ";
-
-        for(int neighbour : adj[node])
-            if(!visited[neighbour])
-                dfsHelper(neighbour, visited);
-    }
-
-    void dfs(int source)
-    {
-        bool *visited = new bool[V]{0};
-        dfsHelper(source, visited);
-    }
-
-    void topological_sort()
-    {
-        vector<int> degreeDependency(V, 0);
-        
-        for(int i=0; i<V; i++)
-            for(int neighbour : adj[i])
-                degreeDependency[neighbour]++;
-
-        queue<int> q;
-        for(int i=0; i<V; i++)
-            if(degreeDependency[i] == 0)
-                q.push(i);
-
-        while(!q.empty())
-        {
-            int node = q.front();
-            q.pop();
-            cout<<node<<" ";
-
-            for(int neighbour : adj[node])
+            auto it = s.begin();
+            int node = it->second;
+            int distTillNow = it->first;
+            s.erase(it);
+            for(auto nbrs : adj[node])
             {
-                degreeDependency[neighbour]--;
-                if(degreeDependency[neighbour] == 0)
-                    q.push(neighbour);
+                int nbr = nbrs.second;
+                int edgeLen = nbrs.first;
+                if(distTillNow + edgeLen < dist[nbr])
+                {
+                    auto f = s.find({dist[nbr], nbr});
+                    if(f != s.end())
+                        s.erase(f);
+                    dist[nbr] = distTillNow + edgeLen;
+                    s.insert({dist[nbr], nbr});
+                }
             }
         }
+
+        for(int i=0; i<V; i++)
+            cout<<i<<" is at a distance of "<<dist[i]<<endl;
+
+        return dist[dest];
     }
 };
 
 int main()
 {
-    Graph g(6); // 6 vertices numbered from 0 to 5
-    g.addEdge(0,2, false);
-    g.addEdge(2,3, false);
-    g.addEdge(3,5, false);
-    g.addEdge(4,5, false);
-    g.addEdge(1,4, false);
-    g.addEdge(1,2, false);
-
-    g.topological_sort();
+    Graph g(5); // 5 vertices numbered from 0 to 4
+    g.addEdge(0, 1, 1);
+    g.addEdge(1, 2, 1);
+    g.addEdge(0, 2, 4);
+    g.addEdge(0, 3, 7);
+    g.addEdge(3, 2, 2);
+    g.addEdge(3, 4, 3);
+    cout<<endl<<g.dijkstra(0, 4)<<endl;
     return 0;
 }
