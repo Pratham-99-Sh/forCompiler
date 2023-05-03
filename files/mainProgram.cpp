@@ -104,7 +104,7 @@ class Graph{
 
 int main()
 {
-    Graph g(6); // 7 vertices numbered from 0 to 6
+    Graph g(6); // 6 vertices numbered from 0 to 5
     g.addEdge(0,2, false);
     g.addEdge(2,3, false);
     g.addEdge(3,5, false);
