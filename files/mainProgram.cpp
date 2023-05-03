@@ -2,7 +2,7 @@
 #include<list>
 #include<queue>
 #include<vector>
-#include<climits>
+//#include<climits>
 #include<set>
 
 using namespace std;
@@ -27,7 +27,7 @@ class Graph{
 
     int dijkstra(int src, int dest)
     {
-        vector<int> dist(V, INT_MAX);
+        vector<int> dist(V, __INT_MAX__);
         dist[src] = 0;
         set<pair<int, int>> s;
         s.insert({0, src});
