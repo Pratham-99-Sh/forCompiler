@@ -1,37 +1,55 @@
-#include<bits/stdc++.h>
+#include<iostream>
+#include<vector>
 using namespace std;
 
-int cntSubarrays(vector<int> arr,int k){
-    //complete this method
-    
-    vector<int> csum;
-    int stiln = 0, res = 0;
-    for(auto x: arr)
-    {
-        if(x==k) res++;
-        stiln+=x;
-        csum.push_back(stiln);
-    }
-    int diff = 1;
-    while(diff < arr.size())
-    {
-        int start = 0, end = start + diff;
-        while(end < arr.size())
-        {
-            if(csum[end] - csum[start] == k) res++;
-            start++;
-            end++;
+void merge(vector<int> &arr, int s, int e){
+    int mid = (s+e)/2;
+    int i = s;
+    int j = mid+1;
+
+    vector<int> temp;
+
+    while(i<=mid && j<=e){
+        if(arr[i] > arr[j]){
+            temp.push_back(arr[j]);
+            j++;
         }
-        diff++;
+        else{
+            temp.push_back(arr[i]);
+            i++;
+        }
+    }    
+
+    while(i<=mid){
+        temp.push_back(arr[i]);
+        i++;
     }
-    
-    return res;
+
+    while(j<=e){
+        temp.push_back(arr[j]);
+        j++;
+    }
+
+    int k = 0;
+    for(int idx = s; idx <= e; idx++)
+        arr[idx] = temp[k++];
     
 }
- 
-int main()
-{
-    vector<int> arr = {10, 2, -2, -20, 10};
-    int k = -10;
-    cout<<cntSubarrays(arr,k)<<endl;
+
+void mergeSort(vector<int> &arr, int s, int e){
+    if(s>=e) return;
+    int mid = (s+e)/2;
+
+    mergeSort(arr, s, mid);
+    mergeSort(arr, mid+1, e);
+    merge(arr, s, e);
+}
+
+int main(){
+    vector<int> arr = {10, 5, 2, 0, 7, 6, 4};
+    mergeSort(arr, 0, arr.size()-1);
+    for(int i=0; i<arr.size(); i++){
+        cout<<arr[i]<<" ";
+    }
+    return 0;
 }
