@@ -146,3 +146,4 @@ print("The list after squaring each element is : ", list2, "\n\n")
 dict1 = {1: "one", 2: "two", 3: "three"}
 dict2 = {i: j for i, j in dict1.items()}
 print("The dictionary after squaring each element is : ", dict2, "\n\n")
+
