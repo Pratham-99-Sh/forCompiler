@@ -1,46 +1,38 @@
-#include <iostream>
-#include <vector>
+#include<iostream>
+#include<vector>
 using namespace std;
 
-// to find first occurence of number in sorted array
-int f_o(vector<int> arr, int k){
-    int s = 0, e = arr.size()-1;
-    int mid = (s+e)/2;
-    int ans = -1;
-    while(s<=e){
-        if(arr[mid] == k){
-            ans = mid;
-            e = mid-1;
-        }
-        else if(arr[mid] > k) e = mid-1;
-        else s = mid+1;
-        mid = (s+e)/2;
-        }
-        return ans;
-}
+int rotatedBinSearch(vector<int> &arr, int key){
+    int low = 0;
+    int high = arr.size()-1;
+ 
+    while(low <= high){
+        int mid = (low + high)/2;
+        if(arr[mid] == key) return mid;
 
-// to find last occurence of number in sorted array
-int l_o(vector<int> arr, int k){
-    int s = 0, e = arr.size()-1;
-    int mid = (s+e)/2;
-    int ans = -1;
-    while(s<=e){
-        if(arr[mid] ==k)
-        {
-            ans = mid;
-            s = mid+1;
+        if(arr[mid] >= arr[low]){
+            if(key >= arr[low] and key <= arr[mid])
+                high = mid-1;
+            else
+                low = mid+1;
         }
-        else if(arr[mid] > k) e = mid-1;
-        else s = mid+1;
-        mid = (s+e)/2;
-    } 
-    return ans;
+
+        if(arr[mid] <= arr[high]){
+            if(key >= arr[mid] and key <= arr[high])
+                low = mid+1;
+            else
+                high = mid-1;
+        }
+
+    }
+
+    return -1;
+    
 }
 
 int main(){
-    vector<int> arr = {1,2,3,4,5,6,7,8,8,8,8,8,8,8,8,9,10};
-    int k = 8;
-    cout<<f_o(arr,k)<<endl;
-    cout<<l_o(arr,k)<<endl;
+    vector<int> arr = {4,5,6,7,0,1,2};
+    int key = 0;
+    cout<<rotatedBinSearch(arr, key);
     return 0;
 }
