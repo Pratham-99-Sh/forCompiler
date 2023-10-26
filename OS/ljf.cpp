@@ -82,7 +82,7 @@ int main() {
     int n = 4;
 
     // Array of processes
-    Process p[n] = {{1, 0, 2}, {2, 2, 3}, {3, 4, 5}, {4, 6, 7}};
+    Process p[n] = {{1, 1, 2}, {2, 2, 4}, {3, 3, 6}, {4, 4, 8}};
 
     // Sort the processes by arrival time
     sortByArrival(n, p);
