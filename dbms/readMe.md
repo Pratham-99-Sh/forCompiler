@@ -1,5 +1,3 @@
-                        # READ ME
-
 Installation Process :
 
 sudo apt install mysql-server
