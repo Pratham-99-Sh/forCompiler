@@ -18,8 +18,9 @@ sudo service --status-all
 
 Running Process :
 
-sudo service mysql start.
-In mysql (located at lower left corner), Right click on mysql in localhost and select new query.
+STEP 1 : sudo service mysql start
+
+STEP 2 : In mysql (located at lower left corner), Right click on mysql in localhost and select new query.
 Close new file that gets opened.
 Write mysql code Right click and run selected part.
 Note : write these before creating a new table,
