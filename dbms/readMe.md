@@ -12,6 +12,10 @@ Extension Setup and more :
 https://www.youtube.com/watch?v=4KXLY5Sf2fU
 
 
+Checking :
+sudo service --status-all
+
+
 Running Process :
 
 sudo service mysql start.

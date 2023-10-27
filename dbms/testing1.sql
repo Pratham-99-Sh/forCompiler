@@ -1,4 +1,5 @@
-DROP TABLE students;
+DROP TABLE IF EXISTS students;
+FLUSH TABLES students;
 
 -- create a table
 CREATE TABLE students (
@@ -6,9 +7,11 @@ CREATE TABLE students (
   name TEXT NOT NULL,
   gender TEXT NOT NULL
 );
+
 -- insert some values
 INSERT INTO students VALUES (1, 'Ryan', 'M');
 INSERT INTO students VALUES (2, 'Joanna', 'F');
+
 -- fetch some values
 SELECT * FROM students WHERE gender = 'F';
 Select * from students;
