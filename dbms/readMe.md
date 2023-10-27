@@ -18,5 +18,7 @@ sudo service mysql start.
 In mysql (located at lower left corner), Right click on mysql in localhost and select new query.
 Close new file that gets opened.
 Write mysql code Right click and run selected part.
-Note : write "DROP TABLE IF EXISTS table_name;", before creating new table.
-             "FLUSH TABLES table_Name;"
+Note : write these before creating a new table,
+
+"DROP TABLE IF EXISTS table_name;"
+"FLUSH TABLES table_Name;"
