@@ -50,8 +50,8 @@ void bestFit(int blockSize[], int m, int processSize[], int n)
 
 int main() 
 { 
-	int blockSize[] = {100, 500, 200, 300, 600}; 
-	int processSize[] = {212, 417, 112, 426}; 
+	int blockSize[] = {50, 150, 70, 175, 300}; 
+	int processSize[] = {25, 50, 100, 75}; 
 	int m = sizeof(blockSize) / sizeof(blockSize[0]); 
 	int n = sizeof(processSize) / sizeof(processSize[0]); 
 
