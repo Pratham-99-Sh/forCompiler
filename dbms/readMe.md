@@ -24,13 +24,11 @@ Running Process :
 
 STEP 1 : sudo service mysql start
 
-STEP 2 : In mysql (located at lower left corner), Right click on mysql in localhost and select new query.
-Close new file that gets opened.
-Write mysql code Right click and run selected part.
+STEP 2 : Write mysql code Right click and run selected part.
 
 Note : write these before creating a new table,
 
-CREATE DATABASE name;     // To create database
+CREATE DATABASE name;     // To create database in case
 USE dbmsLab;              //  To select database to use
 "DROP TABLE IF EXISTS table_name;"
 "FLUSH TABLES table_Name;"
