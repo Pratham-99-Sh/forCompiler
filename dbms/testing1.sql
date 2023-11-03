@@ -1,3 +1,4 @@
+USE dbmsLab;
 DROP TABLE IF EXISTS students;
 FLUSH TABLES students;
 
@@ -15,4 +16,3 @@ INSERT INTO students VALUES (2, 'Joanna', 'F');
 -- fetch some values
 SELECT * FROM students WHERE gender = 'F';
 Select * from students;
-DROP TABLE students;DROP TABLE students;
