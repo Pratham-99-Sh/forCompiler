@@ -30,7 +30,7 @@ Note : write these before creating a new table,
 
 CREATE DATABASE name;     // To create database in case
 USE dbmsLab;              //  To select database to use
-"DROP TABLE IF EXISTS table_name;"
+"DROP TABLE IF EXISTS table_name;"    //make sure to drop ones with foreign key in them first then parent table
 "FLUSH TABLES table_Name;"
 
 
