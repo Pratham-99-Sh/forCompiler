@@ -69,20 +69,17 @@ SELECT * FROM Orders;
 
 -- output of 2 and 4 are somewhat wrong
 
--- 1.) 
-With and without Subquery
+-- 1.) With and without Subquery
 SELECT DISTINCT Sname FROM SalesPeople WHERE City IN (SELECT DISTINCT City FROM Customers);
 SELECT DISTINCT Sname FROM SalesPeople JOIN Customers ON SalesPeople.City = Customers.City;
 
--- 2.) 
-With and without Subquery
+-- 2.) With and without Subquery
 SELECT Sname, Cname FROM SalesPeople INNER JOIN Customers ON SalesPeople.Snum = Customers.Snum
 WHERE SalesPeople.City IN (SELECT DISTINCT City FROM Customers);
 
 SELECT Sname, Cname FROM SalesPeople JOIN Customers ON SalesPeople.City = Customers.City;
 
--- 3.) 
-With and without Subquery
+-- 3.) With and without Subquery
 SELECT Sname FROM SalesPeople WHERE 
 City IN (SELECT City FROM Customers WHERE SalesPeople.Snum = Customers.Snum);
 

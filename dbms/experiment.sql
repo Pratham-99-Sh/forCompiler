@@ -62,11 +62,6 @@ INSERT INTO Orders (Onum, Amt, Odate, Cnum, Snum) VALUES
 (3010, 1309.95, '1990-10-06', 2004, 1002),
 (3011, 9891.88, '1990-10-06', 2006, 1001);
 
-
-SELECT * FROM SalesPeople;
-SELECT * FROM Customers;
-SELECT * FROM Orders;
-
 SELECT SP.Sname
 FROM SalesPeople SP
 WHERE (SELECT COUNT(*) FROM Customers C WHERE C.Snum = SP.Snum) > 2;
