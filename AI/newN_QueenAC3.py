@@ -53,7 +53,7 @@ def print_solution(board):
         print(row_string)
     print()
 
-if __name__ == "__main__":
-    n = int(input("Enter board size: "))
-    solution = nqueens_ac3(n)
-    print_solution(solution)
+
+n = int(input("Enter board size: "))
+solution = nqueens_ac3(n)
+print_solution(solution)

@@ -1,47 +1,40 @@
 import random
 
-def print_solution(board):
-    for row in board:
-        row_string = ""
-        for col in board:
-            if col == row:
-                row_string += "Q "
-            else:
-                row_string += ". "
-        print(row_string)
-    print()
+def nqueens(nr):
+	show(min_conflicts(list(range(nr)), nr), nr)
 
-def is_safe(board, row, col):
-    for i, j in enumerate(board):
-        if j == col or abs(i - row) == abs(j - col):
-            return False
-    return True
+def show(soln, nr):
+	for i in range(nr):
+		row = ['. '] * nr
+		for col in range(nr):
+			if soln[col] == nr - 1 - i:
+				row[col] = 'Q '
+		print(''.join(row))
 
-def min_conflicts(n, max_steps=1000):
-    board = [random.randint(0, n - 1) for _ in range(n)]
+def min_conflicts(soln, nr, iters=1000):
+	def random_pos(li, filt):
+		return random.choice([i for i in range(nr) if filt(li[i])])
 
-    for _ in range(max_steps):
-        conflicted_rows = [row for row in range(n) if not is_safe(board, row, board[row])]
+	for k in range(iters):
+		confs = find_conflicts(soln, nr)
+		if sum(confs) == 0:
+			return soln
+		col = random_pos(confs, lambda elt: elt > 0)
+		vconfs = [hits(soln, nr, col, row) for row in range(nr)]
+		soln[col] = random_pos(vconfs, lambda elt: elt == min(vconfs))
+	raise Exception("Incomplete solution: try more iterations.")
 
-        if not conflicted_rows:
-            return board
+def find_conflicts(soln, nr):
+	return [hits(soln, nr, col, soln[col]) for col in range(nr)]
 
-        random_row = random.choice(conflicted_rows)
-        min_conflict_col = min(
-            (col for col in range(n) if col != board[random_row]),
-            key=lambda col: sum(1 for row in range(n) if not is_safe(board, row, col))
-        )
+def hits(soln, nr, col, row):
+	total = 0
+	for i in range(nr):
+		if i == col:
+			continue
+		if soln[i] == row or abs(i - col) == abs(soln[i] - row):
+			total += 1
+	return total
 
-        board[random_row] = min_conflict_col
-
-    return None
-
-if __name__ == "__main__":
-    n = int(input("Enter the number of queens: "))
-    solution = min_conflicts(n)
-
-    if solution:
-        print("Solution found using Minimum Conflicts:")
-        print_solution(solution)
-    else:
-        print("No solution found using Minimum Conflicts.")
+size_board = int(input('Enter the size of the board:'))
+nqueens(size_board)
