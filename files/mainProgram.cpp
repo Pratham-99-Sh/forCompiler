@@ -1,32 +1,37 @@
-#include <iostream>
-#include <vector>
+#include<iostream>
+#include<vector>
 using namespace std;
 
-int partition(vector<int> &arr, int s, int e){
-    int pivot = arr[e];
-    int i = s-1;
-    for(int j=s; j<e; j++){
-        if(arr[j] < pivot){
-            i++;
-            swap(arr[i], arr[j]);
+
+int minPages(vector<int> books, int m){
+    int s = 0, e = 0, rslt;
+    for (auto x : books) e+=x;
+
+    while(s<=e){
+        int mid = (s+e)/2;
+
+        int sum = 0, cnt = 1;
+        for(auto x : books)
+        {
+            if(sum+x > mid)
+            {
+                cnt++;
+                sum = x;
+
+                if(sum > mid) cnt = m+1;
+            }
+            else sum+=x;
         }
+
+        if(cnt > m) s = mid+1;
+        else {e = mid-1; rslt = mid;}
     }
-    swap(arr[i+1], arr[e]);
-    return i+1;
+   return rslt; 
 }
 
-void quickSort(vector<int> &arr, int s, int e){
-    if(s>=e) return;
-    int pvt = partition(arr, s, e);
-    quickSort(arr, s, pvt-1);
-    quickSort(arr, pvt+1, e);
-}
-
-int main(){
-    vector<int> arr = {10, 5, 2, 0, 7, 6, 4};
-    quickSort(arr, 0, arr.size()-1);
-    for(int i=0; i<arr.size(); i++){
-        cout<<arr[i]<<" ";
-    }
+int main()
+{
+    vector<int> books = {12,34,67,90,10,20,30,40,20,250,100};
+    cout<<minPages(books, 4)<<endl;
     return 0;
 }
