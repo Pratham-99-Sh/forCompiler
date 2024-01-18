@@ -1,5 +1,5 @@
 $date
-	Thu Jan 18 04:32:16 2024
+	Thu Jan 18 10:23:28 2024
 $end
 $version
 	Icarus Verilog
@@ -11,38 +11,44 @@ $scope module tb $end
 $var wire 1 ! out $end
 $var reg 1 " in $end
 $scope module mod0 $end
+$var wire 1 # gnd $end
 $var wire 1 " inp $end
 $var wire 1 ! oup $end
-$var wire 1 # vdd $end
+$var wire 1 $ vdd $end
 $upscope $end
 $upscope $end
 $enddefinitions $end
 #0
 $dumpvars
-1#
+1$
+0#
 x"
 x!
 $end
 #100
-1!
+0!
 0"
 #200
 1!
 1"
 #300
+0!
 0"
 #400
 1!
 1"
 #500
+0!
 0"
 #600
 1!
 1"
 #700
+0!
 0"
 #800
 1!
 1"
 #900
+0!
 0"
