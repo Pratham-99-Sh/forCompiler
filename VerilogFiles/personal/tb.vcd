@@ -1,5 +1,5 @@
 $date
-	Thu Jan 18 04:19:09 2024
+	Thu Jan 18 04:32:16 2024
 $end
 $version
 	Icarus Verilog
@@ -13,11 +13,13 @@ $var reg 1 " in $end
 $scope module mod0 $end
 $var wire 1 " inp $end
 $var wire 1 ! oup $end
+$var wire 1 # vdd $end
 $upscope $end
 $upscope $end
 $enddefinitions $end
 #0
 $dumpvars
+1#
 x"
 x!
 $end
