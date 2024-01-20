@@ -1,4 +1,4 @@
-module inv(input inp, output oup);
+module inv(input wire inp, output wire oup);
 wire w1;
 supply1 vdd;
 supply0 gnd;

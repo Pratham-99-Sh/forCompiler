@@ -7,6 +7,7 @@ wire out;
 inv mod0 (in, out);
 
 initial begin
+    $monitor("in : %b , out : %b", in, out);
     #10 in = 1'b0;
     #10 in = 1'b1;
     #10 in = 1'b0;
