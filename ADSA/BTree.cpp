@@ -22,6 +22,9 @@ public:
   void borrowFromPrev(int idx);
   void borrowFromNext(int idx);
   void merge(int idx);
+  void inorder();
+  void preorder();
+  void postorder();
 
   friend class BTree;
 };
@@ -43,6 +46,9 @@ public:
 
   void insert(int k);
   void remove(int k);
+  void inorder();
+  void preorder();
+  void postorder();
 };
 
 TreeNode::TreeNode(int t1, bool leaf1) {
@@ -244,7 +250,7 @@ void TreeNode::borrowFromPrev(int idx) {
   for (int i = child->n - 1; i >= 0; --i)
     child->keys[i + 1] = child->keys[i];
 
-  if (!child->leaf) {
+    if (!child->leaf) {
     for (int i = child->n; i >= 0; --i)
       child->C[i + 1] = child->C[i];
   }
@@ -306,7 +312,64 @@ void TreeNode::merge(int idx) {
   child->n += sibling->n + 1;
   n--;
 
-  delete sibling;
+  delete (sibling);
+}
+
+void BTree::inorder() {
+  if (root != NULL) {
+    root->inorder();
+    cout << endl;
+  }
+}
+
+void BTree::preorder() {
+  if (root != NULL) {
+    root->preorder();
+    cout << endl;
+  }
+}
+
+void BTree::postorder() {
+  if (root != NULL) {
+    root->postorder();
+    cout << endl;
+  }
+}
+
+void TreeNode::inorder() {
+  int i;
+  for (i = 0; i < n; i++) {
+    if (leaf == false)
+      C[i]->inorder();
+    cout << " " << keys[i];
+  }
+
+  if (leaf == false)
+    C[i]->inorder();
+}
+
+void TreeNode::preorder() {
+  int i;
+  for (i = 0; i < n; i++) {
+    cout << " " << keys[i];
+    if (leaf == false)
+      C[i]->preorder();
+  }
+
+  if (leaf == false)
+    C[i]->preorder();
+}
+
+void TreeNode::postorder() {
+  int i;
+  for (i = 0; i < n; i++) {
+    if (leaf == false)
+      C[i]->postorder();
+    cout << " " << keys[i];
+  }
+
+  if (leaf == false)
+    C[i]->postorder();
 }
 
 int main() {
@@ -322,10 +385,18 @@ int main() {
   t.insert(20);
   t.insert(23);
 
-  cout << "The B-tree is: ";
-  t.traverse();
+  cout << "Inorder traversal: ";
+  t.inorder();
+
+  cout << "Preorder traversal: ";
+  t.preorder();
+
+  cout << "Postorder traversal: ";
+  t.postorder();
 
   t.remove(10);
   cout << "\nThe B-tree after the deletion of 10 is: ";
   t.traverse();
+
+  return 0;
 }
