@@ -12,7 +12,6 @@ public:
   TreeNode(int temp, bool bool_leaf);
   void insertNonFull(int k);
   void splitChild(int i, TreeNode *y);
-  void traverse();
   void remove(int k);
   void removeFromLeaf(int idx);
   void removeFromNonLeaf(int idx);
@@ -39,11 +38,6 @@ public:
     t = temp;
   }
 
-  void traverse() {
-    if (root != NULL)
-      root->traverse();
-  }
-
   void insert(int k);
   void remove(int k);
   void inorder();
@@ -59,18 +53,6 @@ TreeNode::TreeNode(int t1, bool leaf1) {
   C = new TreeNode *[2 * t];
 
   n = 0;
-}
-
-void TreeNode::traverse() {
-  int i;
-  for (i = 0; i < n; i++) {
-    if (leaf == false)
-      C[i]->traverse();
-    cout << " " << keys[i];
-  }
-
-  if (leaf == false)
-    C[i]->traverse();
 }
 
 void BTree::insert(int k) {
@@ -396,7 +378,7 @@ int main() {
 
   t.remove(10);
   cout << "\nThe B-tree after the deletion of 10 is: ";
-  t.traverse();
+  t.inorder();
 
   return 0;
 }
